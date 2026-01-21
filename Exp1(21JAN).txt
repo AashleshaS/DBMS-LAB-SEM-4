@@ -1,0 +1,73 @@
+open sqlplus 
+
+login as
+username:system
+password:**  
+
+sql> create user d1 identified by sit; --->created user
+sql>grant connect, resource to d1;
+sql>connect d1 # connects to this user 
+password:sit 
+
+
+#to change pass: first login as system 
+sql>alter user d1 identified by **;
+sql>grant connect, resource to d1;
+
+
+1)Create a table st_info with attributes prn,name,m1,m2,m3
+
+SQL> create table st_info ( prn int , name varchar2(20), m1 number , m2 number , m3 number);
+
+SQL> select * from tab; 
+# this will display no of tables present in the database
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+ST_INFO                        TABLE
+
+SQL> select * from st_info; #this will display contents in the table 
+no rows selected
+
+SQL> desc st_info;  #this will display the structure of the table 
+Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PRN                                                NUMBER(38)
+ NAME                                               VARCHAR2(20)
+ M1                                                 NUMBER
+ M2                                                 NUMBER
+ M3                                                 NUMBER
+
+Note : NUMBER(38) shows it is integer
+
+
+
+2)Insert at least 10 rows in the table
+
+SQL> insert into st_info(prn,name,m1,m2,m3)values(101,'ash',50,60,20);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(102,'Aish',52,64,21);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(102,'Arya',52,54,41);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(103,'Aswin',53,55,34);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(104,'Raj',54,58,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(105,'Rahul',55,58,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(106,'Ritu',55,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(107,'Esha',85,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(108,'Eins',87,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(109,'Ankush',99,57,78);
+
+set linesize 150 #to have in one line
+SQL> select * from st_info;
+
+
+3)Add attribute total and perc to the table
+
+alter table st_info add total number;
+alter table st_info add perc number;
+
+SQL> select * from st_info;
+
+
+4)Calculate total & perc
+
+update st_info set total=m1+m2+m3;
+update st_info set perc=total/3;
+
