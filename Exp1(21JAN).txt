@@ -71,4 +71,9 @@ SQL> select * from st_info;
 update st_info set total=m1+m2+m3;
 update st_info set perc=total/3;
 
+5) ADD PRIMARY KEY
+SQL> alter table st_info modify prn int primary key;
+SQL> desc st_info;
+
+
 
