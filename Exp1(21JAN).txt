@@ -45,14 +45,14 @@ Note : NUMBER(38) shows it is integer
 
 SQL> insert into st_info(prn,name,m1,m2,m3)values(101,'ash',50,60,20);
 SQL> insert into st_info(prn,name,m1,m2,m3)values(102,'Aish',52,64,21);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(102,'Arya',52,54,41);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(103,'Aswin',53,55,34);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(104,'Raj',54,58,78);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(105,'Rahul',55,58,78);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(106,'Ritu',55,57,78);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(107,'Esha',85,57,78);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(108,'Eins',87,57,78);
-SQL> insert into st_info(prn,name,m1,m2,m3)values(109,'Ankush',99,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(103,'Arya',52,54,41);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(104,'Aswin',53,55,34);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(105,'Raj',54,58,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(106,'Rahul',55,58,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(107,'Ritu',55,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(108,'Esha',85,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(109,'Eins',87,57,78);
+SQL> insert into st_info(prn,name,m1,m2,m3)values(110,'Ankush',99,57,78);
 
 set linesize 150 #to have in one line
 SQL> select * from st_info;
@@ -70,4 +70,5 @@ SQL> select * from st_info;
 
 update st_info set total=m1+m2+m3;
 update st_info set perc=total/3;
+
 
