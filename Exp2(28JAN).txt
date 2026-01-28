@@ -1,0 +1,43 @@
+SQL> select * from tab; 
+SQL> desc department;
+SQL> select * from department;
+
+SQL> alter table department modify name varchar2(30);
+SQL> desc department;
+
+SQL> ALTER TABLE DEPARTMENT modify building varchar2(30);
+SQL> alter table department modify building varchar2(30) not null;
+SQL> desc department;
+
+2.4)Increase the salary of each instructor in the comp..sci department by 10%.
+
+check both tables i.e department and instructor
+select * from department;
+select * from instructor;
+
+select dept_id from department where name = 'Computer Science'
+SQL> update instructor set salary = salary + salary *.1 where dept_id = (select dept_id from department where name = 'Computer Science');
+
+SQL> update instructor set salary = salary + salary *.2 where dept_id = (select dept_id from department where name = 'History');
+
+2.7)
+update instructor set salary=salary+salary * 5/100 where salary<70000;
+SQL> update instructor set salary=salary+salary * 5/100 where salary<80000;
+
+WHOSE SALARY IS ABOVE 80K AND BELOW 85L DEDUCE BY 5%
+SQL> update instructor set salary=salary-salary *5/100 where salary>80000 and salary<85000;
+SQL> select * from instructor;
+
+2.8)a)Create a new course "CS-001", titled "Weekly Seminar" with 1 credit
+desc course;
+select * from course;
+
+insert into course(course_id,title,dept_id,credits) values ('CS-001','Weekly Seminar',8,1); --->parent key not found (no department exist of 8 so we take cs dept 1)
+
+SQL> insert into course(course_id,title,dept_id,credits) values ('CS-001','Weekly Seminar',1,1);
+
+b)SQL> desc section;
+SQL> select * from section;
+SQL> insert into section(Section_id,course_id,sec_id,semester,year) values(8,'CS-001',1,'FALL',2017);
+
+
