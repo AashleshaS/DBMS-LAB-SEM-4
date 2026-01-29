@@ -1,0 +1,56 @@
+X.TO CREATE A SEQUENCE
+
+create sequence emp_seq start with 1 increment by 1;  #can start with 0 too but not negative
+
+NOW CREATE TABLE:
+create table emp(emp_id int primary key , name varchar2(20),mobile int);
+desc emp;
+insert into emp(emp_id,name,mobile) values (emp_seq.nextval,'xyz',8784629887);
+insert into emp(emp_id,name,mobile) values (emp_seq.nextval,'xy3z',8784659887);
+insert into emp(emp_id,name,mobile) values (emp_seq.nextval,'xy4z',8784629877);
+insert into emp(emp_id,name,mobile) values (emp_seq.nextval,'xy6z',8784639887);
+insert into emp(emp_id,name,mobile) values (emp_seq.nextval,'xy9z',8784649887);
+select * from emp;
+
+select max(emp_id) from emp; -->gives the max value of the emp_id made by sequence or general in table
+
+drop sequence emp_seq; 
+# deleting the sequence
+ 
+insert into emp(emp_id,name,mobile) values (emp_seq.nextval,'xy9z',8784649887); -->seq doesn't exist
+select * from emp; #tables remain unchanged
+
+Now you can either add manually or make a new seq but first see the max value 
+
+NEW SEQUENCE
+create sequence emp1_s start with 6 increment by 1;
+insert into emp(emp_id,name,mobile) values (emp1_s.nextval,'xyz10',8784649881);
+insert into emp(emp_id,name,mobile) values (emp1_s.nextval,'xyz11',8784649882);
+insert into emp(emp_id,name,mobile) values (emp1_s.nextval,'xyz12',8784649883);
+insert into emp(emp_id,name,mobile) values (emp1_s.nextval,'xyz13',8784649884);
+insert into emp(emp_id,name,mobile) values (emp1_s.nextval,'xyz14',8784649885);
+select * from emp;
+select max(emp_id) from emp;
+
+XI.RENAME TABLE NAME AND FIELD NAME
+
+to rename the table: rename emp to employee;
+to rename the field: alter table employee rename column mobile to mobilenumber;
+
+XII.ADD A NEW COLUMN PINCODE WITY NOT NULL CONSTRAINT TO THE ABOVE TABLE;
+alter table employee add PINCODE Number(10);
+truncate table employee;
+alter table employee modify PINCODE number not null;
+desc employee;
+
+insert into employee values(emp1_s.nextval,'xyz13',8784249886,211001);
+insert into employee values(emp1_s.nextval,'xyz',8784249887,211002);
+insert into employee values(emp1_s.nextval,'xyz3',8784249838,211003);
+
+
+
+
+
+
+
+
