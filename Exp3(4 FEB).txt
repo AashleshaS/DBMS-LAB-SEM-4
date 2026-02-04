@@ -1,0 +1,41 @@
+TO DISPLAY INSTRUCTIONS FROM COMP.SCI DEPT
+select * from instructor where dept_id=(select dept_id from department where name='Computer Science');
+
+insert into instructor values(8,'xyz',1,'N',55000);
+select * from instructor where dept_id=(select dept_id from department where name='Computer Science');
+
+USING JOINS:
+select i.instructor_id,i.Name,i.salary,d.name from instructor i join department d on i.dept_id=d.dept_id where d.name='Computer Science';
+
+EXPERIMENT 3
+
+(A) AVG SALARY OF INSTRUCTORS OF COMP SCI DEPT
+select d.name,avg(i.salary) as AVG_SAL from instructor i join department d on i.dept_id=d.dept_id where d.name='Computer Science' group by d.name;
+
+(B) FIND THE AVERAGE SALARY IN EACH DEPARTMENT
+select d.name,avg(i.salary)as AVG_SAL from department d join instructor i on d.dept_id=i.dept_id group by d.name;
+
+(C) WHAT IS THE TOTAL OF ALL TEACHERS EARNING MORE THAN 30K?
+select sum(salary) as total_sal from instructor where salary>30000;
+
+(D) LIST THE NUMBER OF STUDENTS ENROLLED IN EACH COURSE
+
+First created both tables using student.txt
+
+select c.course_id,c.title, count(e.student_id) as enrolled_students from course c left join section s on c.course_id=s.course_id left join enrollment e on s.section_id=e.section_id group by c.course_id, c.title order by c.course_id;
+
+------------------------------------------------------------------------
+select * from department where name='Computer Science';
+select * from department where lower(name) like 'computer science';
+select * from department where lower(name) like '%sci%'; 
+select * from department where lower(name) like '%com%';
+
+select * from department where lower(name) like '%Computer Science%';-->search for characters before and after(have space) but left not have=>no rows selected 
+---------------------------------------------------------
+
+
+To calculate length of the names of students
+select  length(name) from student;
+
+to calculate total no of instructors
+select count(name) from instructor;
