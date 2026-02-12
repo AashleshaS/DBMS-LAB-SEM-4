@@ -10,7 +10,7 @@ update instructor set hiredate = date '2026-01-22' where instructor_id=7;
 
 
 
-select * from instructor where hiredate > add_months(sydat, -60);
+select * from instructor where hiredate > add_months(sysdate, -60);
 
 Display the list of instructor who have joined after 1 jan 2021 or before 30 jun 2022
 -> select * from instructor where hiredate > date '2021-01-01' and hiredate < date '2022-06-30';
@@ -33,5 +33,6 @@ select d.name,count(i.name) from instructor i join department d on i.dept_id=d.d
 select name,dept_id,salary from instructor;
 
 update instructor set salary = 70000 where name='Frank Miller';
+
 
 select i.name,  i.salary from instructor i where i.salary>=(select i2.salary from instructor i2 join department d on i2.dept_id = d.dept_id where d.name='Biology');
