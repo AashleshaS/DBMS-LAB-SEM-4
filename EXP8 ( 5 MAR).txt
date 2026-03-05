@@ -1,0 +1,174 @@
+                                               EXPERIMENT-8
+
+
+AIM:- If there are marks of 4 subjects. 
+     1) check for pass condition each subject must be of 50 marks.
+     2) check for 
+               a)distinction if total above 75%
+               b) first divison if total above 60%
+               c) second division if total above 50%
+
+I.CASE 1     
+    CS=75       
+    M1=45       
+    M2=52      
+    M3=75   
+    
+create or replace procedure CA1
+as
+   cs number :=75;
+   m1 number:=45;
+   m2 number:=52;
+   m3 number:=75;
+   tot number;
+   avg1 number;
+   per number;
+   
+begin
+    if cs>=50 and m1>=50 and m2>=50 and m3>=50 then
+       tot:=cs+m1+m2+m3;
+       avg1:=tot/400;
+       per:=avg1*100;
+        
+       DBMS_OUTPUT.PUT_LINE('RESULT : PASS');
+       DBMS_OUTPUT.PUT_LINE('TOTAL MARKS : '|| tot);
+       DBMS_OUTPUT.PUT_LINE('PERCENTAGE : '|| per || '%');
+
+       if per >75 then 
+          DBMS_output.put_line('DIVISION : DISTINCTION');
+          
+       elsif per<=75 and per>60 then 
+          DBMS_output.put_line('DIVISION : FIRST DIVISION');
+       elsif per<=60 and per>50 then
+          DBMS_OUTPUT.PUT_LINE('DIVISION : SECOND DIVISION');
+       else
+          DBMS_OUTPUT.PUT_LINE('NO DIVISION SPECIFIED');
+       end if;
+    else
+        DBMS_OUTPUT.PUT_LINE('FAILED');
+    end if;
+end;
+/
+
+Procedure created.
+
+SQL> EXEC CA1
+FAILED
+PL/SQL procedure successfully completed.
+-----------------------------------------------------------------------------------------------------
+
+II.CASE 2
+     CS=75
+     M1=79
+     M2=100
+     M3=95
+
+create or replace procedure CA2
+as
+   cs number :=75;
+   m1 number:=79;
+   m2 number:=100;
+   m3 number:=95;
+   tot number;
+   avg1 number;
+   per number;
+   
+begin
+    if cs>=50 and m1>=50 and m2>=50 and m3>=50 then
+       tot:=cs+m1+m2+m3;
+       avg1:=tot/400;
+       per:=avg1*100;
+        
+       DBMS_OUTPUT.PUT_LINE('RESULT : PASS');
+       DBMS_OUTPUT.PUT_LINE('TOTAL MARKS : '|| tot);
+       DBMS_OUTPUT.PUT_LINE('PERCENTAGE : '|| per || '%');
+
+       if per >75 then 
+          DBMS_output.put_line('DIVISION : DISTINCTION');
+          
+       elsif per<=75 and per>60 then 
+          DBMS_output.put_line('DIVISION : FIRST DIVISION');
+       elsif per<=60 and per>50 then
+          DBMS_OUTPUT.PUT_LINE('DIVISION : SECOND DIVISION');
+       else
+          DBMS_OUTPUT.PUT_LINE('NO DIVISION SPECIFIED');
+       end if;
+    else
+        DBMS_OUTPUT.PUT_LINE('FAILED');
+    end if;
+end;
+/
+
+Procedure created.
+
+SQL> EXEC CA2
+RESULT : PASS
+TOTAL MARKS : 349
+PERCENTAGE : 87.25%
+DIVISION : DISTINCTION
+
+PL/SQL procedure successfully completed.
+
+
+-----------------------------------------------------------------------------
+
+III. ABOVE SAME INPUT FROM USER
+
+create or replace procedure CA
+(a in number, b in number, c in number , d in number )
+as
+   cs number :=a;
+   m1 number:=b;
+   m2 number:=c;
+   m3 number:=d;
+   tot number;
+   avg1 number;
+   per number;
+   
+begin
+    if cs>=50 and m1>=50 and m2>=50 and m3>=50 then
+       tot:=cs+m1+m2+m3;
+       avg1:=tot/400;
+       per:=avg1*100;
+        
+       DBMS_OUTPUT.PUT_LINE('RESULT : PASS');
+       DBMS_OUTPUT.PUT_LINE('TOTAL MARKS : '|| tot);
+       DBMS_OUTPUT.PUT_LINE('PERCENTAGE : '|| per || '%');
+
+       if per >75 then 
+          DBMS_output.put_line('DIVISION : DISTINCTION');
+          
+       elsif per<=75 and per>60 then 
+          DBMS_output.put_line('DIVISION : FIRST DIVISION');
+       elsif per<=60 and per>50 then
+          DBMS_OUTPUT.PUT_LINE('DIVISION : SECOND DIVISION');
+       else
+          DBMS_OUTPUT.PUT_LINE('NO DIVISION SPECIFIED');
+       end if;
+    else
+        DBMS_OUTPUT.PUT_LINE('FAILED');
+    end if;
+end;
+/
+       
+
+Procedure created.
+
+SQL> exec CA(75,45,52,75)
+FAILED
+PL/SQL procedure successfully completed.
+
+SQL> EXEC CA(75,79,100,95)
+RESULT : PASS
+TOTAL MARKS : 349
+PERCENTAGE : 87.25%
+DIVISION : DISTINCTION
+PL/SQL procedure successfully completed.
+
+SQL> EXEC CA(50,50,50,50);
+RESULT : PASS
+TOTAL MARKS : 200
+PERCENTAGE : 50%
+NO DIVISION SPECIFIED
+
+PL/SQL procedure successfully completed.
