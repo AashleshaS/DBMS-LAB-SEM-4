@@ -1,0 +1,124 @@
+EXPERIMENT 10 - EXCEPTIONS
+
+NOTE:- Divide by zero is meaningless 
+show error;
+
+I) SYSTEM DEFINED EXCEPTION
+
+SQL> select * from employees;
+
+    EMP_ID EMP_NAME                                              DEPT_ID     SALARY MANAGER_ID
+---------- -------------------------------------------------- ---------- ---------- ----------
+         1 John                                                      101       5000
+         2 Alice                                                     102       3000          1
+         3 Robert                                                    101       4000          1
+         4 Michael                                                   103       7000
+         5 Susan                                                     102       3500          2
+         6 Nancy                                                     104       4200
+         7 David                                                     103       3900          4
+         8 Laura                                                     101       5200          3
+         9 Kanak
+-----------------------------------------------------------------------------------------------------
+NO_DATA_FOUND
+
+Create or replace procedure ndf(n in number)
+As
+ Vname Employees.emp_name%type;
+ Vsalary Employees.salary%type;
+Begin
+ Select Emp_name,salary into Vname,Vsalary from employees where emp_id=n;
+ dbms_output.put_line('Name: '|| Vname || 'Salary: ' || Vsalary);
+Exception
+  when No_data_found then
+	dbms_output.put_line('Emp_id='||n||'not found');
+End;
+/
+
+Procedure created.
+
+SQL> exec ndf(1);
+Name: JohnSalary: 5000
+
+PL/SQL procedure successfully completed.
+
+SQL> exec ndf(10);
+Emp_id=10not found
+
+PL/SQL procedure successfully completed.
+
+SQL> exec ndf(2);
+Name: AliceSalary: 3000
+
+PL/SQL procedure successfully completed.
+
+----------------------------------------------------------------------------
+
+TOO_MANY_ROWS
+
+Create or replace procedure mrf(n in number)
+As
+ Vname Employees.emp_name%type;
+ Vsalary Employees.salary%type;
+Begin
+ Select Emp_name,salary into Vname,Vsalary from employees where dept_id=n;
+ dbms_output.put_line('Name: '|| Vname || 'Salary: ' || Vsalary);
+Exception
+  when TOO_MANY_ROWS then
+	dbms_output.put_line('More than one employee found on dept_id = ' || n);
+End;
+/
+
+Procedure created.
+
+SQL> exec mrf(104);
+Name: NancySalary: 4200
+PL/SQL procedure successfully completed.
+
+SQL> exec mrf(101);
+More than one employee found on dept_id = 101
+PL/SQL procedure successfully completed.
+
+-----------------------------------------------------------------------------------------------------
+
+II) USER DEFINED EXCEPTION
+
+Create or replace procedure ude(m1 in number,m2 in number,m3 in number)
+AS
+ tot number;
+ perc number;
+ avg1 number;
+ Invalid_marks exception;
+Begin
+  if m1<0 or m1>100 or m2<0 or m2>100 or m3<0 or m3>100 then
+	raise Invalid_marks;
+  elsif m1>50 and m2>50 and m3>50 then
+	tot:=m1+m2+m3;
+        avg1:=tot/300;
+	perc:=avg1*100;
+       DBMS_OUTPUT.PUT_LINE('RESULT : PASS');
+       DBMS_OUTPUT.PUT_LINE('TOTAL MARKS : '|| tot);
+       DBMS_OUTPUT.PUT_LINE('PERCENTAGE : '|| perc || '%');
+ else 
+       DBMS_OUTPUT.PUT_LINE('FAIL');
+end if;
+Exception
+ when Invalid_marks then 
+      DBMS_OUTPUT.PUT_LINE('ENTER MARKS IN RANGE 0-100');
+END;
+/
+	
+Procedure created.
+
+SQL> exec ude(53,67,78);
+RESULT : PASS
+TOTAL MARKS : 198
+PERCENTAGE : 66%
+
+PL/SQL procedure successfully completed.
+
+SQL> exec ude(101,32,45);
+ENTER MARKS IN RANGE 0-100
+
+PL/SQL procedure successfully completed.
+
+
