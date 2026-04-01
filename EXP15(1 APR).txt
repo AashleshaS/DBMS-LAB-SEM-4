@@ -1,0 +1,100 @@
+# RETRIVE AND PRINT FIRST THREE LETTER OF CURRENT MONTH
+CREATE OR REPLACE PROCEDURE TO_MONTH
+AS
+  V_MONTH VARCHAR2(5);
+BEGIN
+  V_MONTH:=to_char(sysdate,'MON');
+  DBMS_OUTPUT.PUT_LINE('THE CURRENT MONTH IS ' || V_MONTH);
+END;
+/
+Procedure created.
+
+SQL> exec to_month;
+THE CURRENT MONTH IS APR
+PL/SQL procedure successfully completed.
+
+
+# RETRIVE AND PRINT COMPLETE NAME OF CURRENT MONTH
+CREATE OR REPLACE PROCEDURE TO_MONTH
+AS
+  V_MONTH VARCHAR2(10);
+BEGIN
+  V_MONTH:=to_char(sysdate,'MONTH');
+  DBMS_OUTPUT.PUT_LINE('THE CURRENT MONTH IS ' || V_MONTH);
+END;
+/
+
+Procedure created.
+
+SQL> exec to_month;
+THE CURRENT MONTH IS APRIL
+PL/SQL procedure successfully completed.
+
+NOTE: WE MADE MON->MONTH AND VARCHAR2(5)->VARCHAR2(10) for other months can also come december 9 letters+1extra space
+
+
+# RETRIVE AND PRINT COMPLETE NAME OF CURRENT DAY
+CREATE OR REPLACE PROCEDURE TO_DAY
+AS
+  V_DAY VARCHAR2(10);
+BEGIN
+  V_DAY:=to_char(sysdate,'DAY');
+  DBMS_OUTPUT.PUT_LINE('THE CURRENT MONTH IS ' || V_DAY);
+END;
+/
+
+Procedure created.
+
+SQL> EXEC TO_DAY;
+THE CURRENT MONTH IS WEDNESDAY
+PL/SQL procedure successfully completed.
+
+# RETRIVE AND PRINT FIRST THREE OF CURRENT DAY
+
+CREATE OR REPLACE PROCEDURE TO_DAY
+AS
+  V_DAY VARCHAR2(10);
+BEGIN
+  V_DAY:=to_char(sysdate,'DY');
+  DBMS_OUTPUT.PUT_LINE('THE CURRENT MONTH IS ' || V_DAY);
+END;
+/
+
+Procedure created.
+
+SQL> EXEC TO_DAY;
+THE CURRENT MONTH IS WED
+
+PL/SQL procedure successfully completed.
+
+
+#DESIGN A TRIGGER SUCH THAT NO INSERTION OR UPDATION is done on sat or sun(for practice you ceate trigger for wed)
+
+SQL> CREATE OR REPLACE TRIGGER tri_day
+  2  BEFORE INSERT OR UPDATE ON emp2
+  3  FOR EACH ROW
+  4  DECLARE
+  5      v_day VARCHAR2(10);
+  6  BEGIN
+  7      v_day := UPPER(TO_CHAR(SYSDATE, 'dy'));
+  8
+  9      IF v_day = 'WED' THEN
+ 10          RAISE_APPLICATION_ERROR(-20001, 'CANT INSERT ON WEDNESDAY HEHEHE');
+ 11      END IF;
+ 12  END;
+ 13  /
+
+SQL> INSERT INTO EMP2 VALUES(104,'aryan',2,25000);
+INSERT INTO EMP2 VALUES(104,'aryan',2,25000)
+            *
+ERROR at line 1:
+ORA-20001: CANT INSERT ON WEDNESDAY HEHEHE
+ORA-06512: at "D1.TRI_DAY", line 7
+ORA-04088: error during execution of trigger 'D1.TRI_DAY'
+
+NOTE:
+TO_CHAR(SYSDATE, 'day') returns:
+but padded with spaces 
+Example: 'wednesday ' (extra spaces at the end)
+
+Use 'DY' (short day name) to avoid spacing issues
