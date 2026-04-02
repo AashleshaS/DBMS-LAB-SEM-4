@@ -1,0 +1,138 @@
+
+SQL> select * from emp2;
+
+     EMPNO NAME                   CATEGORY     SALARY
+---------- -------------------- ---------- ----------
+       101 ASH                           1      10000
+       102 ASWIN                         1      15000
+       103 ASTRA                         2      25000
+       104 ARPEET                        2      35000
+       105 ARYAN                         3      45000
+       105 ARYA                          3      50000
+
+6 rows selected.
+
+WE ALTERED TABLE BECOZ 50000 * 10 MAKES IT 6 DIGITS WHICH EXCEEDS COLUMN DATATYPE SIZE(5DIGITS)
+
+SQL> alter table emp2 modify salary number(10,2);
+Table altered.
+
+SQL> desc emp2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                              NUMBER(38)
+ NAME                                               VARCHAR2(20)
+ CATEGORY                                           NUMBER(38)
+ SALARY                                             NUMBER(10,2)
+------------------------------------------------------------------------------------------
+
+
+I. PROCEDURE TO FIND THE RANGE OF SALARY FROM A GIVEN TABLE
+
+create or replace procedure max_min_sal
+as
+v_max emp2.salary%type;
+ v_min emp2.salary%type;
+v_upper emp2.salary%type;
+v_lower emp2.salary%type;
+
+begin
+ select max(salary) into v_max from emp2;
+ select min(salary) into v_min from emp2;
+ v_upper:=v_min*10;
+v_lower:=v_max/10;05
+
+DBMS_OUTPUT.PUT_LINE('SALARY RANGE FROM ' || v_upper || ' TO ' || v_lower);
+end;
+/
+
+Procedure created.
+
+SQL> exec max_min_sal;
+SALARY RANGE FROM 100000 TO 5000
+
+PL/SQL procedure successfully completed.
+
+
+---------------------------------------------------------------------------------------
+
+II.CREATE A TRGGIGER FOR ENTER ONLY IN RANGE
+
+create or replace trigger max_min_sal before insert or update on emp2 for each row
+declare
+v_max emp2.salary%type;
+ v_min emp2.salary%type;
+v_upper emp2.salary%type;
+v_lower emp2.salary%type;
+
+begin
+ select max(salary) into v_max from emp2;
+ select min(salary) into v_min from emp2;
+ v_upper:=v_min*10;
+v_lower:=v_max/10;
+
+if :new.salary<v_lower or :new.salary>v_upper then
+  RAISE_APPLICATION_ERROR(-20001,'VALUE NOT IN RANGE '||v_lower || ' TO ' || v_upper);
+end if;
+end;
+/
+
+Trigger created.
+
+SQL> insert into emp2 values(106,'Ashi',1,2000);
+insert into emp2 values(106,'Ashi',1,2000)
+            *
+ERROR at line 1:
+ORA-20001: VALUE NOT IN RANGE 5000 TO 100000
+ORA-06512: at "D1.MAX_MIN_SAL", line 14
+ORA-04088: error during execution of trigger 'D1.MAX_MIN_SAL'
+
+SQL> insert into emp2 values(106,'Ashi',1,20000);
+1 row created.
+
+
+--------------------------------------------------------------------------------
+
+NOTE : NEW CONCEPT IF WE TRY TO UPDATE THE TABLE AFTER THIS INSERT TRIGGER HAPPENED IT GIVES AN ERROR BECAUSE TABLE OPENED DUE TO SELECT IS REMAINDED OPEN IF WE OPEN AGAIN IT OPEN IN REA DONLY MODE
+
+SQL> update emp2 set salary=salary+10;
+update emp2 set salary=salary+10
+       *
+ERROR at line 1:
+ORA-04091: table D1.EMP2 is mutating, trigger/function may not see it
+ORA-06512: at "D1.MAX_MIN_SAL", line 8
+ORA-04088: error during execution of trigger 'D1.MAX_MIN_SAL'
+
+
+FIXED CODE-----------------
+
+create or replace trigger max_min_sal before insert or update on emp2 
+COMPOUND TRIGGER
+declare
+v_max emp2.salary%type;
+ v_min emp2.salary%type;
+v_upper emp2.salary%type;
+v_lower emp2.salary%type;
+BEFORE STATEMENT IS
+begin
+ select max(salary) into v_max from emp2;
+ select min(salary) into v_min from emp2;
+
+ v_upper:=v_min*10;
+v_lower:=v_max/10;
+
+END BEFORE STATEMENT;
+
+BEFORE EACH ROW IS
+BEGIN
+if :new.salary<v_lower or :new.salary>v_upper then
+  RAISE_APPLICATION_ERROR(-20001,'VALUE NOT IN RANGE '||v_lower || ' TO ' || v_upper);
+end if;
+END BEFORE EACH ROW;
+end;
+/
+
+COMPOUND TRIGGER
+*
+ERROR at line 2:
+ORA-25028: regular trigger body can not start with keyword COMPOUND
